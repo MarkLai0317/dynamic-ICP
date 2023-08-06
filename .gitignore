@@ -195,4 +195,4 @@ cython_debug/
 .DS_Store
 .vscode
 
-data_3d_semantics/*
+data_3d_semantics/

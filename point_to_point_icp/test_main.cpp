@@ -57,21 +57,24 @@ void transformPoints(vector<Vector3d> &points, Isometry3d transformation){
 int main(int argc, char* argv[])
 {
    
-    if (argc != 3) {
-        std::cerr << "Usage: " << argv[0] << " <icp_iterate_times>" << " <optimize_times>"<<std::endl;
+    if (argc != 4) {
+        std::cerr << "Usage: " << argv[0] << " <icp_iterate_times>" << " <optimize_times>" << "<file_path>"<<std::endl;
         return 1;
     }
 
     int icp_iterate_times = std::stoi(argv[1]);
     int optimize_times = std::stoi(argv[2]);
+    string file_path = argv[3];
     
-    PointsReader pointsReader("whatever");
+    PointsReader pointsReader(file_path);
 
     // read first frame data
     std::vector<Eigen::Vector3d> points1;
     pointsReader.readFramePoints(points1);
     std::vector<Eigen::Vector3d> points2;
     pointsReader.readFramePoints(points2);
+
+    //pointsReader.printVector(point);
 
     // vector<Vector3d> true_points;
     // for (size_t i = 0; i < 1000; ++i)

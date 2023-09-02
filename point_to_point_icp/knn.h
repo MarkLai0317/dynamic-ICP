@@ -13,25 +13,49 @@ using namespace Eigen;
 // find point1 that is pair with point2(以point2 為主)
 void knn(vector<pair<Vector3d, Vector3d>> &pointPairList , vector<Vector3d> &points1, vector<Vector3d> &points2, double threshold = 0){
     
-    
-    for(int i = 0; i < points2.size();++i){
-        double minDistance = threshold;
-        bool smallerThanThreshold = false;
-        Vector3d firstPoint;
+    // find the pairList that the length is min(points2.size() <= points1.size())
+    if(points2.size() <= points1.size()){
+        for(int i = 0; i < points2.size();++i){
+            double minDistance = threshold;
+            bool smallerThanThreshold = false;
+            Vector3d firstPoint;
 
-        for(int j = 0; j < points1.size();++j){
-            double distance = (points2[i] - points1[j]).norm();
-            if(distance < threshold &&  distance < minDistance ){
-                smallerThanThreshold = true;
-                minDistance = distance;
-                firstPoint = points1[j];
+            for(int j = 0; j < points1.size();++j){
+                double distance = (points2[i] - points1[j]).norm();
+                if(distance < threshold &&  distance < minDistance ){
+                    smallerThanThreshold = true;
+                    minDistance = distance;
+                    firstPoint = points1[j];
+                }
+            }
+            if(smallerThanThreshold){
+                pair<Vector3d, Vector3d> pointPair(firstPoint, points2[i]);
+                pointPairList.push_back(pointPair);
             }
         }
-        if(smallerThanThreshold){
-            pair<Vector3d, Vector3d> pointPair(firstPoint, points2[i]);
-            pointPairList.push_back(pointPair);
+    }
+
+    else{
+        for(int i = 0; i < points1.size();++i){
+            double minDistance = threshold;
+            bool smallerThanThreshold = false;
+            Vector3d secondPoint;
+
+            for(int j = 0; j < points2.size();++j){
+                double distance = (points2[i] - points1[j]).norm();
+                if(distance < threshold &&  distance < minDistance ){
+                    smallerThanThreshold = true;
+                    minDistance = distance;
+                    secondPoint = points2[j];
+                }
+            }
+            if(smallerThanThreshold){
+                pair<Vector3d, Vector3d> pointPair(points1[i], secondPoint);
+                pointPairList.push_back(pointPair);
+            }
         }
     }
+    
 
     return;
     // for(int i = 0; i < points2.size();++i){
